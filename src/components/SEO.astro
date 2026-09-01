@@ -1,0 +1,15 @@
+---
+import { company } from '@/data/site';
+interface Props { title: string; description: string; image?: string; noindex?: boolean }
+const { title, description, image = '/og-image.svg', noindex = false } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
+const fullTitle = title.includes(company.shortName) ? title : `${title} | ${company.shortName}`;
+const organization = { '@context': 'https://schema.org', '@type': 'Organization', name: company.name, url: Astro.site, email: company.email, telephone: company.phone, address: { '@type': 'PostalAddress', streetAddress: 'Corner Hobbs & Plymouth Roads, Southerton', addressLocality: 'Harare', addressCountry: 'ZW' } };
+---
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex,nofollow" />}
+<meta property="og:type" content="website" /><meta property="og:title" content={fullTitle} /><meta property="og:description" content={description} /><meta property="og:url" content={canonical} /><meta property="og:image" content={new URL(image, Astro.site ?? Astro.url.origin)} />
+<meta name="twitter:card" content="summary_large_image" /><meta name="twitter:title" content={fullTitle} /><meta name="twitter:description" content={description} />
+<script is:inline type="application/ld+json" set:html={JSON.stringify(organization)} />

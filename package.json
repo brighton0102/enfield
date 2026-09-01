@@ -1,0 +1,39 @@
+{
+  "name": "enfield-zimbabwe-website",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "typecheck": "astro check",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "latest",
+    "@fontsource/barlow-condensed": "latest",
+    "@fontsource/inter": "latest",
+    "astro": "latest",
+    "pdfjs-dist": "latest"
+  },
+  "devDependencies": {
+    "@astrojs/check": "latest",
+    "@eslint/js": "latest",
+    "@types/node": "latest",
+    "eslint": "latest",
+    "eslint-plugin-astro": "latest",
+    "prettier": "latest",
+    "prettier-plugin-astro": "latest",
+    "typescript": "^5.9.2",
+    "typescript-eslint": "latest",
+    "vitest": "latest"
+  },
+  "packageManager": "pnpm@10.15.0",
+  "engines": {
+    "node": ">=20.11"
+  }
+}

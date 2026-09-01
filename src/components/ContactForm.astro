@@ -1,0 +1,42 @@
+<form class="contact-form" action="/api/contact" method="post" data-contact-form novalidate>
+  <div class="form-grid">
+    <label>Full name <input name="name" autocomplete="name" required minlength="2" /></label>
+    <label>Company <input name="company" autocomplete="organization" /></label>
+    <label>Email address <input name="email" type="email" autocomplete="email" required /></label>
+    <label>Phone <input name="phone" type="tel" autocomplete="tel" /></label>
+    <label class="full">Product area<select name="service" required><option value="">Choose one</option><option>Cables & conductors</option><option>Steel & engineering</option><option>Electrical equipment</option><option>Solar & backup power</option><option>Wire & fencing</option><option>Automotive supplies</option><option>Other</option></select></label>
+    <label class="full">How can we help?<textarea name="message" rows="6" required minlength="20"></textarea></label>
+    <label class="consent full"><input type="checkbox" name="consent" required /> <span>I agree that Enfield may use these details to respond to my enquiry. See the <a href="/privacy/">privacy policy</a>.</span></label>
+    <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+  </div>
+  <div class="cf-turnstile" data-sitekey={import.meta.env.PUBLIC_TURNSTILE_SITE_KEY}></div>
+  <p class="form-status" role="status" aria-live="polite" data-form-status></p>
+  <button class="button" type="submit">Send enquiry</button>
+</form>
+<script>
+  const turnstile = document.querySelector('.cf-turnstile');
+  if (turnstile instanceof HTMLElement && turnstile.dataset.sitekey) {
+    const challenge = document.createElement('script');
+    challenge.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js';
+    challenge.async = true;
+    challenge.defer = true;
+    document.head.append(challenge);
+  }
+  const form = document.querySelector('[data-contact-form]');
+  const status = document.querySelector('[data-form-status]');
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!(form instanceof HTMLFormElement) || !(status instanceof HTMLElement)) return;
+    if (!form.checkValidity()) { form.reportValidity(); status.textContent = 'Please complete the required fields.'; return; }
+    const button = form.querySelector('button[type="submit"]');
+    if (button instanceof HTMLButtonElement) button.disabled = true;
+    status.textContent = 'Sending your enquiry…';
+    try {
+      const response = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || 'Unable to send your enquiry.');
+      status.textContent = 'Thank you. Your enquiry has been sent.'; form.reset();
+    } catch (error) { status.textContent = error instanceof Error ? error.message : 'Unable to send your enquiry. Please call or email us.'; }
+    finally { if (button instanceof HTMLButtonElement) button.disabled = false; }
+  });
+</script>

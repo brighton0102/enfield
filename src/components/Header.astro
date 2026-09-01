@@ -1,0 +1,32 @@
+---
+import Logo from './Logo.astro';
+import { navigation } from '@/data/site';
+const current = Astro.url.pathname;
+---
+<header class="site-header" data-header>
+  <div class="container nav-wrap">
+    <Logo />
+    <nav class="desktop-nav" aria-label="Primary navigation">
+      {navigation.map((item) => <a class:list={{ active: current === item.href }} href={item.href}>{item.label}</a>)}
+    </nav>
+    <a class="button button-small desktop-cta" href="/contact/">Request a quote</a>
+    <button class="menu-button" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-button>
+      <span class="sr-only">Open navigation</span><span></span><span></span>
+    </button>
+  </div>
+  <nav id="mobile-menu" class="mobile-nav" aria-label="Mobile navigation" hidden data-mobile-menu>
+    <div class="container">
+      {navigation.map((item) => <a href={item.href}>{item.label}</a>)}
+      <a class="button" href="/contact/">Request a quote</a>
+    </div>
+  </nav>
+</header>
+<script>
+  const button = document.querySelector('[data-menu-button]');
+  const menu = document.querySelector('[data-mobile-menu]');
+  button?.addEventListener('click', () => {
+    const open = button.getAttribute('aria-expanded') === 'true';
+    button.setAttribute('aria-expanded', String(!open));
+    if (menu instanceof HTMLElement) menu.hidden = open;
+  });
+</script>
