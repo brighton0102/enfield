@@ -1,0 +1,23 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import CTASection from '@/components/CTASection.astro';
+import { cableCategories, type CableCategory } from '@/data/cableCategories';
+
+export function getStaticPaths() {
+  return cableCategories.map((category) => ({ params: { category: category.slug }, props: { category } }));
+}
+
+const { category } = Astro.props as { category: CableCategory };
+---
+
+<BaseLayout title={`${category.category} cable products`} description={`${category.description} Explore Enfield Zimbabwe’s ${category.category.toLowerCase()} cable range.`}>
+  <section class="category-hero"><div class="container category-hero-grid">
+    <div><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/services/">Products</a><span aria-hidden="true">/</span><span>{category.category}</span></nav><p class="eyebrow">Enfield cables · {category.category}</p><h1>{category.title}</h1><p class="page-intro">{category.description}</p><a class="button" href={`/contact/?service=cables&category=${category.slug}`}>Request a cable quote</a></div>
+    <div class="category-hero-image"><img src={category.image} alt={category.alt} width="1254" height="1254" /></div>
+  </div></section>
+  <section class="section"><div class="container"><div class="section-heading split"><div><p class="eyebrow">Product range</p><h2>Products for {category.category.toLowerCase()} applications.</h2></div><p>Share your required size, conductor configuration, voltage rating, quantity and installation conditions so our team can confirm the appropriate specification.</p></div>
+    <div class="category-product-grid">{category.products.map(([name, description, image], index) => <article><div class="category-product-image"><img src={image} alt={`${name} product example`} width="800" height="600" loading="lazy" /></div><div class="category-product-copy"><span>{String(index + 1).padStart(2, '0')}</span><h3>{name}</h3><p>{description}</p><a class="text-link" href={`/contact/?service=cables&category=${category.slug}&product=${encodeURIComponent(name)}`}>Enquire about this product</a></div></article>)}</div>
+  </div></section>
+  <section class="section surface"><div class="container category-nav"><div><p class="eyebrow">Explore cable categories</p><h2>Find products for another application.</h2></div><div>{cableCategories.filter((item) => item.slug !== category.slug).map((item) => <a href={`/services/cables/${item.slug}/`}><span>{item.category}</span><strong>{item.title}</strong><b aria-hidden="true">→</b></a>)}</div></div></section>
+  <CTASection title={`Discuss your ${category.category.toLowerCase()} cable requirements.`} />
+</BaseLayout>
