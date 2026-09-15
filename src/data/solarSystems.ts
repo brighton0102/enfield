@@ -17,6 +17,9 @@ export const solarSystemGroups = [
     images: [
       ['/products/solar-systems/mobile-energy-storage-system.jpg', 'Mobile battery energy storage system with display and power outlets'],
       ['/products/solar-systems/battery-inverter-storage-system.jpg', 'Wall-mounted inverter and lithium battery storage equipment'],
+      ['/products/solar-systems/portable-battery-storage-front.jpeg', 'Portable wheeled battery storage unit viewed from the front'],
+      ['/products/solar-systems/portable-battery-storage-rear.jpeg', 'Portable wheeled battery storage unit viewed from the rear'],
+      ['/products/solar-systems/wheeled-energy-storage-system.jpeg', 'Compact wheeled energy storage system with power outlets and display'],
     ],
   },
   {
@@ -40,4 +43,3 @@ export const solarSystemGroups = [
     ],
   },
 ] as const;
-
