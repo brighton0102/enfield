@@ -22,3 +22,4 @@
 .solar-feature-image{background:var(--surface-blue)}.solar-feature-image img{object-fit:contain}.solar-jump-nav .container{grid-template-columns:repeat(4,1fr)}
 @media(max-width:900px){.solar-jump-nav .container{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:560px){.solar-jump-nav .container{grid-template-columns:1fr}}
+.trust-strip strong>span[aria-hidden="true"]{color:inherit;font-size:inherit}
