@@ -9,7 +9,7 @@ import { clients, services } from '@/data/site';
       <div class="hero-copy"><p class="eyebrow">Built on supply. Backed by experience.</p><h1>The materials that keep Zimbabwe moving.</h1><p class="hero-intro">Quality steel and electrical products, expert service, competitive prices. From a single requirement to a major project, Enfield helps customers source with confidence.</p><div class="button-row"><a class="button" href="/contact/">Request a quote</a><a class="button button-ghost" href="/services/">Explore our range</a></div></div>
       <div class="hero-visual" aria-label="Solar panels, electrical cables and an inverter"><img src="/hero-cables.png" width="1920" height="1080" alt="Solar panels with coils of electrical cable and an inverter" fetchpriority="high" /></div>
     </div>
-    <div class="container trust-strip"><div><strong>85+</strong><span>years of company history</span></div><div><strong>6</strong><span>core product categories</span></div><div><strong>Harare</strong><span>coordinated supply across Zimbabwe</span></div><div><strong>298/48</strong><span>company registration</span></div></div>
+    <div class="container trust-strip" data-count-section><div><strong><span data-count="85" data-suffix="+" aria-hidden="true">85+</span><span class="sr-only">85 plus</span></strong><span>years of company history</span></div><div><strong><span data-count="6" aria-hidden="true">6</span><span class="sr-only">6</span></strong><span>core product categories</span></div><div><strong>Harare</strong><span>coordinated supply across Zimbabwe</span></div><div><strong><span data-count="298" aria-hidden="true">298</span><span aria-hidden="true">/</span><span data-count="48" aria-hidden="true">48</span><span class="sr-only">298 slash 48</span></strong><span>company registration</span></div></div>
   </section>
 
   <section class="section"><div class="container"><div class="section-heading split"><div><p class="eyebrow">Our product range</p><h2>One reliable source for essential materials.</h2></div><p>We bring together technical products that businesses, contractors and institutions need to build, maintain and operate.</p></div><div class="service-list">{services.map((service) => <a class="service-row" href={`/services/#${service.slug}`}><span>{service.number}</span><div><h3>{service.name}</h3><p>{service.summary}</p></div><b aria-hidden="true">↗</b></a>)}</div></div></section>
@@ -21,3 +21,48 @@ import { clients, services } from '@/data/site';
   <section class="section client-section"><div class="container"><p class="eyebrow">Organisations named in our company profile</p><h2>Trusted across industry and infrastructure.</h2><div class="client-grid">{clients.map((client) => <span>{client}</span>)}</div><p class="source-note">Client names are reproduced from Enfield’s supplied corporate profile.</p></div></section>
   <CTASection title="Tell us what your project requires." />
 </BaseLayout>
+
+<script>
+  const countSection = document.querySelector('[data-count-section]');
+  const counters = countSection?.querySelectorAll<HTMLElement>('[data-count]');
+
+  if (countSection && counters?.length && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    let hasStarted = false;
+
+    const startCounting = () => {
+      if (hasStarted) return;
+      hasStarted = true;
+
+      counters.forEach((counter) => {
+        const target = Number(counter.dataset.count);
+        const suffix = counter.dataset.suffix ?? '';
+        const duration = 1100;
+        const startTime = performance.now();
+
+        counter.textContent = `0${suffix}`;
+
+        const update = (time: number) => {
+          const progress = Math.min((time - startTime) / duration, 1);
+          const easedProgress = 1 - Math.pow(1 - progress, 3);
+          counter.textContent = `${Math.round(target * easedProgress)}${suffix}`;
+
+          if (progress < 1) requestAnimationFrame(update);
+        };
+
+        requestAnimationFrame(update);
+      });
+    };
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(([entry]) => {
+        if (!entry?.isIntersecting) return;
+        observer.disconnect();
+        startCounting();
+      }, { threshold: 0.25 });
+
+      observer.observe(countSection);
+    } else {
+      startCounting();
+    }
+  }
+</script>

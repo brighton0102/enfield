@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.enfield.co.zw/sitemap-index.xml
+Sitemap: https://enfieldzim.co.zw/sitemap-index.xml
